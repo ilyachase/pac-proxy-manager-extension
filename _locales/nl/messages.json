@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "Laatste versie (v1.1.0) - 26 augustus 2025",
+    "message": "Laatste versie (v1.1.1) - 27 augustus 2025",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• PAC Script Override Control toegevoegd: Nieuwe schakelknop op het Proxies tabblad om te bepalen of door gebruiker gedefinieerde proxy servers PAC script resultaten overschrijven",
+    "message": "• Verbeterde SOCKS Proxy Ondersteuning: Uitgebreide ondersteuning voor socks://, socks4:// en socks5:// protocollen met correcte PAC keyword toewijzing en automatische standaard poort behandeling (1080)",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

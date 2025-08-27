@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "Última versión (v1.1.0) - 26 de agosto de 2025",
+    "message": "Última versión (v1.1.1) - 27 de agosto de 2025",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• Añadido Control de Anulación de Script PAC: Nuevo interruptor en la pestaña Proxies para controlar si los servidores proxy definidos por el usuario anulan los resultados del script PAC",
+    "message": "• Soporte Mejorado de Proxy SOCKS: Soporte integral para protocolos socks://, socks4:// y socks5:// con mapeo correcto de palabras clave PAC y manejo automático de puerto predeterminado (1080)",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

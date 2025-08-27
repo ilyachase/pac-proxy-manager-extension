@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "Neueste Version (v1.1.0) - 26. August 2025",
+    "message": "Neueste Version (v1.1.1) - 27. August 2025",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• PAC-Skript-Override-Kontrolle hinzugefügt: Neuer Umschalter auf der Proxies-Registerkarte zur Kontrolle, ob benutzerdefinierte Proxy-Server PAC-Skript-Ergebnisse überschreiben",
+    "message": "• Erweiterte SOCKS-Proxy-Unterstützung: Umfassende Unterstützung für socks://, socks4:// und socks5:// Protokolle mit korrekter PAC-Keyword-Zuordnung und automatischer Standard-Port-Behandlung (1080)",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

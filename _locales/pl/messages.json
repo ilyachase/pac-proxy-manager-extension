@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "Najnowsza wersja (v1.1.0) - 26 sierpnia 2025",
+    "message": "Najnowsza wersja (v1.1.1) - 27 sierpnia 2025",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• Dodano kontrolę nadpisywania skryptów PAC: Nowy przełącznik na karcie Proxies do kontrolowania, czy serwery proxy zdefiniowane przez użytkownika nadpisują wyniki skryptu PAC",
+    "message": "• Ulepszona Obsługa SOCKS Proxy: Kompleksowa obsługa protokołów socks://, socks4:// i socks5:// z prawidłowym mapowaniem słów kluczowych PAC i automatyczną obsługą domyślnego portu (1080)",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

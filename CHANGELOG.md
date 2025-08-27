@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2025-08-27
+
+### Added
+- **Enhanced SOCKS Proxy Support**: Added comprehensive support for SOCKS proxy protocols
+  - Support for `socks://`, `socks4://`, and `socks5://` URL schemes
+  - Automatic mapping to correct PAC keywords (`SOCKS` for v4, `SOCKS5` for v5)
+  - Default port handling (1080) when port is not specified
+  - Graceful handling of unknown protocol schemes (fallback to HTTP proxy)
+
 ## [1.1.0] - 2025-08-26
 
 ### Added

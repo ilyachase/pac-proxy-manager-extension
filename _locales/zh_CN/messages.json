@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "最新版本 (v1.1.0) - 2025年8月26日",
+    "message": "最新版本 (v1.1.1) - 2025年8月27日",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• 添加了PAC脚本覆盖控制：代理选项卡中的新切换开关，用于控制用户定义的代理服务器是否覆盖PAC脚本结果",
+    "message": "• 增强SOCKS代理支持：对socks://、socks4://和socks5://协议的全面支持，具有正确的PAC关键字映射和自动默认端口处理(1080)",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

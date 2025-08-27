@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "Ultima versione (v1.1.0) - 26 agosto 2025",
+    "message": "Ultima versione (v1.1.1) - 27 agosto 2025",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• Aggiunto controllo di sovrascrittura script PAC: Nuovo interruttore nella scheda Proxies per controllare se i server proxy definiti dall'utente sovrascrivono i risultati dello script PAC",
+    "message": "• Supporto SOCKS Avanzato: Supporto completo per protocolli socks://, socks4:// e socks5:// con mappatura corretta delle parole chiave PAC e gestione automatica della porta predefinita (1080)",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

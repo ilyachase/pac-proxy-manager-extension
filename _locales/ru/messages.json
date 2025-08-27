@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "Последняя версия (v1.1.0) - 26 августа 2025",
+    "message": "Последняя версия (v1.1.1) - 27 августа 2025",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• Добавлен контроль переопределения PAC-скриптов: новый переключатель на вкладке «Прокси» для управления тем, переопределяют ли пользовательские прокси-серверы результаты PAC-скрипта",
+    "message": "• Улучшенная поддержка SOCKS-прокси: Комплексная поддержка протоколов socks://, socks4:// и socks5:// с правильным сопоставлением ключевых слов PAC и автоматической обработкой порта по умолчанию (1080)",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

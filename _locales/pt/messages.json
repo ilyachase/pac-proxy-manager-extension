@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "Versão mais recente (v1.1.0) - 26 de agosto de 2025",
+    "message": "Versão mais recente (v1.1.1) - 27 de agosto de 2025",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• Adicionado Controle de Substituição de Script PAC: Novo botão de alternância na aba Proxies para controlar se servidores proxy definidos pelo usuário substituem resultados do script PAC",
+    "message": "• Suporte SOCKS Aprimorado: Suporte abrangente para protocolos socks://, socks4:// e socks5:// com mapeamento correto de palavras-chave PAC e tratamento automático de porta padrão (1080)",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

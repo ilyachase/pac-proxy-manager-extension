@@ -368,11 +368,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "En son sürüm (v1.1.0) - 26 Ağustos 2025",
+    "message": "En son sürüm (v1.1.1) - 27 Ağustos 2025",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• PAC Betiği Geçersiz Kılma Kontrolü eklendi: Kullanıcı tanımlı proxy sunucularının PAC betiği sonuçlarını geçersiz kılıp kılmayacağını kontrol etmek için Proxies sekmesinde yeni geçiş anahtarı",
+    "message": "• Geliştirilmiş SOCKS Proxy Desteği: socks://, socks4:// ve socks5:// protokolleri için kapsamlı destek, doğru PAC anahtar kelime eşleme ve otomatik varsayılan port işleme (1080)",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

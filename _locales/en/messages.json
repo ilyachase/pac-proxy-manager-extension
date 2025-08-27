@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "Latest Version (v1.1.0) - August 26, 2025",
+    "message": "Latest Version (v1.1.1) - August 27, 2025",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• Added PAC Script Override Control: New toggle switch on the Proxies tab to control whether user-defined proxy servers override PAC script results",
+    "message": "• Enhanced SOCKS Proxy Support: Added comprehensive support for socks://, socks4://, and socks5:// protocols with proper PAC keyword mapping and automatic default port handling (1080)",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

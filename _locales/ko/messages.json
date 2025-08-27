@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "최신 버전 (v1.1.0) - 2025년 8월 26일",
+    "message": "최신 버전 (v1.1.1) - 2025년 8월 27일",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• PAC 스크립트 재정의 제어 추가: 사용자 정의 프록시 서버가 PAC 스크립트 결과를 재정의할지 여부를 제어하는 프록시 탭의 새로운 토글 스위치",
+    "message": "• 향상된 SOCKS 프록시 지원: socks://, socks4://, socks5:// 프로토콜에 대한 포괄적 지원, 올바른 PAC 키워드 매핑 및 자동 기본 포트 처리 (1080)",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

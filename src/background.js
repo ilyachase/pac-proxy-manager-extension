@@ -87,10 +87,35 @@ class ProxyManager {
             .map((proxy) => {
                 try {
                     const url = new URL(proxy.url);
-                    const protocol = url.protocol === 'https:' ? 'HTTPS' : 'PROXY';
-                    const port = url.port || (url.protocol === 'https:' ? '443' : '80');
+
+                    // remove ":" from the end of protocol
+                    const scheme = url.protocol.replace(':', '').toLowerCase();
+
+                    // URL scheme → PAC keyword mapping
+                    const schemeMap = {
+                        http: 'PROXY',
+                        https: 'HTTPS',
+                        socks: 'SOCKS', // chrome treats it as SOCKS v4
+                        socks4: 'SOCKS',
+                        socks5: 'SOCKS5'
+                    };
+
+                    const protocol = schemeMap[scheme] || 'PROXY';
+
+                    // default ports
+                    const defaultPortMap = {
+                        http: '80',
+                        https: '443',
+                        socks: '1080',
+                        socks4: '1080',
+                        socks5: '1080'
+                    };
+
+                    const port = url.port || defaultPortMap[scheme] || '80';
+
                     return `${protocol} ${url.hostname}:${port}`;
                 } catch (_e) {
+                    // if invalid URL - keep as HTTP-proxy
                     return `PROXY ${proxy.url}`;
                 }
             })
@@ -284,6 +309,11 @@ function FindProxyForURL(url, host) {
             isBlocked: settings.levelOfControl === 'controlled_by_other_extensions'
         };
     }
+}
+
+// Export for testing (browser-compatible)
+if (typeof globalThis !== 'undefined') {
+    globalThis._testExports = { ProxyManager, IndexedDBStorage };
 }
 
 const proxyManager = new ProxyManager();
