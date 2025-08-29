@@ -41,9 +41,8 @@ describe('Background Script - ProxyManager', () => {
       updatePacScript: () => Promise.resolve()
     };
     
-    // Import ProxyManager from the background script 
-    await import('../src/background.js');
-    const { ProxyManager } = globalThis._testExports;
+    // Import ProxyManager from the ProxyManager module 
+    const { ProxyManager } = await import('../src/utils/proxyManager.js');
     
     // Create a new instance for each test - it will use the mocked indexedDBStorage
     proxyManager = new ProxyManager();

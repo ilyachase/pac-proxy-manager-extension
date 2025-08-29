@@ -14,7 +14,8 @@
     "https://*/*"
   ],
   "background": {
-    "service_worker": "dist/background.js"
+    "service_worker": "dist/background.js",
+    "type": "module"
   },
   "icons": {
     "16": "icons/icon-16.png",
