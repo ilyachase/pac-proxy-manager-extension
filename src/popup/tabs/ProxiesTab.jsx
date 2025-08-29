@@ -10,7 +10,7 @@ const ProxiesTab = () => {
     const [proxies, setProxies] = useState([]);
     const [overridePacScript, setOverridePacScript] = useState(true);
     const [messages, setMessages] = useState({});
-    const [loading, setLoading] = useState(false);
+
     const [isInitialLoading, setIsInitialLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [editingProxyId, setEditingProxyId] = useState(null);
@@ -74,11 +74,17 @@ const ProxiesTab = () => {
 
     const toggleOverridePacScript = async () => {
         const newValue = !overridePacScript;
+        const originalValue = overridePacScript;
+
+        // Optimistically update UI first
+        setOverridePacScript(newValue);
+
         try {
             await chrome.storage.local.set({ overridePacScript: newValue });
-            setOverridePacScript(newValue);
         } catch (_error) {
-            // Silently ignore errors
+            // Revert the UI state on error
+            setOverridePacScript(originalValue);
+            toast.error('Failed to update PAC script override setting');
         }
     };
 
@@ -87,18 +93,25 @@ const ProxiesTab = () => {
             return;
         }
 
-        setLoading(true);
+        const newStatus = !proxyStatus;
+        const originalStatus = proxyStatus;
+
+        // Optimistically update UI first
+        setProxyStatus(newStatus);
+
         try {
-            const action = proxyStatus ? 'deactivateProxy' : 'activateProxy';
+            const action = originalStatus ? 'deactivateProxy' : 'activateProxy';
             const response = await chrome.runtime.sendMessage({ action });
 
-            if (response === true) {
-                setProxyStatus(!proxyStatus);
+            if (response !== true) {
+                // Revert the UI state on failure
+                setProxyStatus(originalStatus);
+                toast.error('Failed to update proxy status');
             }
         } catch (_error) {
-            // Silently ignore errors
-        } finally {
-            setLoading(false);
+            // Revert the UI state on error
+            setProxyStatus(originalStatus);
+            toast.error('Failed to update proxy status');
         }
     };
 
@@ -261,7 +274,7 @@ const ProxiesTab = () => {
                         <button
                             type="button"
                             onClick={toggleProxy}
-                            disabled={loading || (!proxyStatus && proxies.length === 0)}
+                            disabled={!proxyStatus && proxies.length === 0}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
                                 proxyStatus ? 'bg-slate-500' : 'bg-gray-200'
                             }`}
@@ -281,11 +294,6 @@ const ProxiesTab = () => {
                                     proxyStatus ? 'translate-x-6' : 'translate-x-1'
                                 }`}
                             />
-                            {loading && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
-                                </div>
-                            )}
                         </button>
                     </div>
                 </div>

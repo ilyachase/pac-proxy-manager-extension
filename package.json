@@ -4,6 +4,7 @@
   "description": "A Chrome extension to manage PAC (Proxy Auto Configuration) files",
   "type": "module",
   "scripts": {
+    "all": "npm run lint:fix && npm run build && npm run test",
     "build": "vite build",
     "dev": "vite build --watch",
     "test": "vitest --run",
