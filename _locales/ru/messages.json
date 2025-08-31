@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "Последняя версия (v1.1.1) - 27 августа 2025",
+    "message": "Последняя версия (v1.1.2) - 31 августа 2025",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• Улучшенная поддержка SOCKS-прокси: Комплексная поддержка протоколов socks://, socks4:// и socks5:// с правильным сопоставлением ключевых слов PAC и автоматической обработкой порта по умолчанию (1080)",
+    "message": "• Изменение порядка вкладок: Порядок вкладок изменен для лучшего пользовательского опыта - Исключения теперь отображаются первыми, за ними следуют PAC-скрипты, прокси-серверы и О программе",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

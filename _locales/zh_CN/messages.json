@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "最新版本 (v1.1.1) - 2025年8月27日",
+    "message": "最新版本 (v1.1.2) - 2025年8月31日",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• 增强SOCKS代理支持：对socks://、socks4://和socks5://协议的全面支持，具有正确的PAC关键字映射和自动默认端口处理(1080)",
+    "message": "• 标签重新排列：为改善用户体验重新排列标签顺序 - 异常现在首先显示，其后依次是PAC脚本、代理服务器和关于",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

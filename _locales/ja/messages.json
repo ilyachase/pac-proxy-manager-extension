@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "最新バージョン (v1.1.1) - 2025年8月27日",
+    "message": "最新バージョン (v1.1.2) - 2025年8月31日",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• 強化されたSOCKSプロキシサポート：socks://、socks4://、socks5://プロトコルの包括的なサポート、適切なPACキーワードマッピング、および自動デフォルトポート処理（1080）",
+    "message": "• タブの並び替え：ユーザーエクスペリエンス向上のためタブの順序を再編成 - 例外が最初に表示され、その後にPACスクリプト、プロキシサーバー、Aboutが続きます",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

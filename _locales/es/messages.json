@@ -373,11 +373,11 @@
     "description": "Title for the changelog section in About tab"
   },
   "changelogLatestVersion": {
-    "message": "Última versión (v1.1.1) - 27 de agosto de 2025",
+    "message": "Última versión (v1.1.2) - 31 de agosto de 2025",
     "description": "Latest version header in changelog section"
   },
   "changelogContent": {
-    "message": "• Soporte Mejorado de Proxy SOCKS: Soporte integral para protocolos socks://, socks4:// y socks5:// con mapeo correcto de palabras clave PAC y manejo automático de puerto predeterminado (1080)",
+    "message": "• Reordenamiento de pestañas: Reorganizada el orden de pestañas para mejor experiencia de usuario - Las excepciones aparecen ahora primero, seguidas de scripts PAC, servidores proxy y Acerca de",
     "description": "Content describing the latest version changes"
   },
   "featureRequestTitle": {

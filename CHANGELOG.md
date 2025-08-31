@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2025-08-31
+
+### Changed
+- **Tab Reordering**: Reorganized tab order for better user experience - Exceptions now appears first, followed by PAC scripts, Proxy Servers, and About
+
 ## [1.1.1] - 2025-08-27
 
 ### Added
@@ -43,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Clarified proxy toggle logic: toggle now controls user proxies only, not entire system
 - Domain exceptions now only apply when user proxies are enabled
 - PAC scripts work independently regardless of user proxy toggle state
-- Added inline enable/disable toggles for PAC scripts in list view  
+- Added inline enable/disable toggles for PAC scripts in list view
 - Fixed storage inconsistency between chrome.storage and IndexedDB for PAC scripts
 - Updated test suite to reflect new PAC proxy logic and architecture
 - Fixed PAC script toggles incorrectly affecting user proxy switch - systems now operate independently

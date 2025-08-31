@@ -26,16 +26,16 @@ const PopupApp = () => {
 
     const categories = [
         {
+            name: messages.tabExceptions,
+            content: 'exceptions-tab'
+        },
+        {
             name: messages.tabPacScript,
             content: 'pac-scripts-tab'
         },
         {
             name: messages.tabProxies,
             content: 'proxies-tab'
-        },
-        {
-            name: messages.tabExceptions,
-            content: 'exceptions-tab'
         },
         {
             name: messages.tabAbout,
