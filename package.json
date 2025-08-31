@@ -4,9 +4,10 @@
   "description": "A Chrome extension to manage PAC (Proxy Auto Configuration) files",
   "type": "module",
   "scripts": {
+    "dev": "vite build --watch",
+    "test:watch": "vitest",
     "all": "npm run lint:fix && npm run build && npm run test",
     "build": "vite build",
-    "dev": "vite build --watch",
     "test": "vitest --run",
     "lint:fix": "biome check src/ --write --unsafe",
     "package": "npm run build && rm -f chrome-extension.zip && zip -r chrome-extension.zip manifest.json dist icons _locales"
