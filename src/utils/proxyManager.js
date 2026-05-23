@@ -3,6 +3,7 @@ import indexedDBStorage from './indexedDB.js';
 export class ProxyManager {
     constructor() {
         this.isProxyActive = false;
+        this.lastAppliedPac = null;
         this.init().catch(() => {});
     }
 
@@ -72,68 +73,33 @@ export class ProxyManager {
 
         const enabledPacScripts = pacScripts.filter((script) => script.enabled);
 
-        const pacScriptFunctions = enabledPacScripts
+        // Initialize each user PAC script ONCE in an IIFE so that any heavy
+        // setup (regex compilation, large lookup tables, etc.) doesn't re-run
+        // on every URL Chrome asks us to resolve. The IIFE captures the outer
+        // FindProxyForURL to detect user scripts that forgot to declare their
+        // own (in which case we fall back to DIRECT instead of recursing into
+        // ourselves).
+        const pacScriptInits = enabledPacScripts
             .map((script, index) => {
                 return `
-function userPacScript${index}(url, host) {
+var userPacScript${index} = (function (__outerFindProxyForURL) {
   try {
     ${script.content}
-    return FindProxyForURL(url, host);
-  } catch (e) {
-    return "DIRECT";
-  }
-}`;
+    if (typeof FindProxyForURL === 'function' && FindProxyForURL !== __outerFindProxyForURL) {
+      return FindProxyForURL;
+    }
+  } catch (e) {}
+  return function () { return "DIRECT"; };
+})(typeof FindProxyForURL === 'function' ? FindProxyForURL : null);`;
             })
             .join('\n');
 
-        return `
-${pacScriptFunctions}
-
-function FindProxyForURL(url, host) {
-  const hasUserProxies = ${hasUserProxies};
-  const userProxyString = "${userProxyString}";
-  
-  ${
-      hasUserProxies
-          ? `
-  const domainExceptions = ${JSON.stringify(domainExceptions || {})};
-  
-  function checkDomainException(domain) {
-    if (domainExceptions[domain]) {
-      const option = domainExceptions[domain];
-      if (option === 'yes') {
-        return userProxyString + "; DIRECT";
-      }
-      if (option === 'no') {
-        return "DIRECT";
-      }
-    }
-    return null;
-  }
-  
-  let exceptionResult = checkDomainException(host);
-  if (exceptionResult !== null) return exceptionResult;
-  
-  for (const domain in domainExceptions) {
-    if (domain.startsWith('*.')) {
-      const baseDomain = domain.slice(2);
-      if (host === baseDomain || host.endsWith('.' + baseDomain)) {
-        exceptionResult = checkDomainException(domain);
-        if (exceptionResult !== null) return exceptionResult;
-      }
-    }
-  }
-  
-  `
-          : `
-  `
-  }
-  ${enabledPacScripts
-      .map(
-          (_script, index) => `
+        const pacScriptCalls = enabledPacScripts
+            .map(
+                (_script, index) => `
   try {
-    const pacResult${index} = userPacScript${index}(url, host);
-    if (pacResult${index} !== "DIRECT") {
+    var pacResult${index} = userPacScript${index}(url, host);
+    if (pacResult${index} && pacResult${index} !== "DIRECT") {
       if (hasUserProxies && ${overridePacScript}) {
         return userProxyString + "; DIRECT";
       } else {
@@ -142,9 +108,70 @@ function FindProxyForURL(url, host) {
     }
   } catch (e) {
   }`
-      )
-      .join('\n')}
-  
+            )
+            .join('\n');
+
+        // 'no' exceptions are always honoured (they only need DIRECT and don't
+        // require a user proxy). 'yes' exceptions still require user proxies.
+        const exceptionsJson = JSON.stringify(domainExceptions || {});
+        const exceptionsBlock = `
+  const domainExceptions = ${exceptionsJson};
+
+  function checkDomainException(domain) {
+    if (!Object.prototype.hasOwnProperty.call(domainExceptions, domain)) return null;
+    const option = domainExceptions[domain];
+    if (option === 'no') return "DIRECT";
+    if (option === 'yes' && hasUserProxies) return userProxyString + "; DIRECT";
+    return null;
+  }
+
+  let exceptionResult = checkDomainException(host);
+  if (exceptionResult !== null) return exceptionResult;
+
+  for (const domain in domainExceptions) {
+    if (domain.charCodeAt(0) === 42 && domain.charCodeAt(1) === 46) {
+      const baseDomain = domain.slice(2);
+      if (host === baseDomain || (host.length > baseDomain.length && host.slice(-baseDomain.length - 1) === '.' + baseDomain)) {
+        exceptionResult = checkDomainException(domain);
+        if (exceptionResult !== null) return exceptionResult;
+      }
+    }
+  }
+`;
+
+        return `
+${pacScriptInits}
+
+const __pacCacheLimit = 1024;
+const __pacCache = Object.create(null);
+const __pacCacheOrder = [];
+
+function FindProxyForURL(url, host) {
+  const schemeEnd = url.indexOf(':');
+  const cacheKey = (schemeEnd > 0 ? url.substring(0, schemeEnd) : '') + '|' + host;
+
+  if (cacheKey in __pacCache) {
+    return __pacCache[cacheKey];
+  }
+
+  const result = __resolveProxy(url, host);
+
+  __pacCache[cacheKey] = result;
+  __pacCacheOrder.push(cacheKey);
+  if (__pacCacheOrder.length > __pacCacheLimit) {
+    const evicted = __pacCacheOrder.shift();
+    delete __pacCache[evicted];
+  }
+
+  return result;
+}
+
+function __resolveProxy(url, host) {
+  const hasUserProxies = ${hasUserProxies};
+  const userProxyString = "${userProxyString}";
+${exceptionsBlock}
+${pacScriptCalls}
+
   return "DIRECT";
 }`;
     }
@@ -168,32 +195,42 @@ function FindProxyForURL(url, host) {
             const hasEnabledPacScripts = enabledPacScripts.length > 0;
 
             if (!hasEnabledPacScripts && !userProxiesEnabled) {
-                await chrome.proxy.settings.clear({ scope: 'regular' });
+                if (this.isProxyActive || this.lastAppliedPac !== null) {
+                    await chrome.proxy.settings.clear({ scope: 'regular' });
+                }
                 this.isProxyActive = false;
+                this.lastAppliedPac = null;
                 return;
             }
 
-            if (hasEnabledPacScripts || userProxiesEnabled) {
-                const pacScript = this.generateCombinedPacScript(
-                    domainExceptions,
-                    proxies,
-                    pacScripts,
-                    userProxiesEnabled,
-                    overridePacScript
-                );
+            const pacScript = this.generateCombinedPacScript(
+                domainExceptions,
+                proxies,
+                pacScripts,
+                userProxiesEnabled,
+                overridePacScript
+            );
 
-                await chrome.proxy.settings.set({
-                    value: {
-                        mode: 'pac_script',
-                        pacScript: {
-                            data: pacScript
-                        }
-                    },
-                    scope: 'regular'
-                });
-
-                this.isProxyActive = true;
+            // Skip re-applying identical PAC. chrome.proxy.settings.set tears
+            // down existing sockets and clears the PAC result cache, so doing
+            // it on every storage change (even no-op) can cause timeouts on
+            // in-flight loads.
+            if (this.isProxyActive && pacScript === this.lastAppliedPac) {
+                return;
             }
+
+            await chrome.proxy.settings.set({
+                value: {
+                    mode: 'pac_script',
+                    pacScript: {
+                        data: pacScript
+                    }
+                },
+                scope: 'regular'
+            });
+
+            this.isProxyActive = true;
+            this.lastAppliedPac = pacScript;
         } catch (_error) {
             // Silently ignore errors
         }
@@ -229,6 +266,7 @@ function FindProxyForURL(url, host) {
             } else {
                 await chrome.proxy.settings.clear({ scope: 'regular' });
                 this.isProxyActive = false;
+                this.lastAppliedPac = null;
             }
 
             return true;

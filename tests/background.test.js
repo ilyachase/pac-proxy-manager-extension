@@ -67,7 +67,7 @@ describe('Background Script - ProxyManager', () => {
       expect(pacScript).toContain('hasUserProxies = true');
     });
 
-    it('should generate PAC script without domain exceptions when user proxies disabled', () => {
+    it('should emit domainExceptions even when user proxies disabled, gating yes-exceptions on hasUserProxies', () => {
 
       const domainExceptions = {
         '*.example.com': 'yes',
@@ -77,9 +77,10 @@ describe('Background Script - ProxyManager', () => {
       const pacScripts = [];
 
       const pacScript = proxyManager.generateCombinedPacScript(domainExceptions, proxyServers, pacScripts, false);
-      
+
       expect(pacScript).toContain('hasUserProxies = false');
-      expect(pacScript).not.toContain('domainExceptions');
+      expect(pacScript).toContain('domainExceptions');
+      expect(pacScript).toContain("option === 'yes' && hasUserProxies");
     });
 
     it('should include PAC script functions when present', () => {
@@ -94,7 +95,7 @@ describe('Background Script - ProxyManager', () => {
 
       const pacScript = proxyManager.generateCombinedPacScript({}, proxyServers, pacScripts, false);
       
-      expect(pacScript).toContain('function userPacScript0');
+      expect(pacScript).toContain('userPacScript0');
       expect(pacScript).toContain('test-proxy:8080');
     });
 
@@ -357,16 +358,17 @@ describe('Background Script - ProxyManager', () => {
       expect(pacScript).toContain('headlessui.com');
     });
 
-    it('should ignore domain exceptions when user proxies disabled', () => {
+    it('should still emit domain exceptions when user proxies disabled (no-bypass fast-path)', () => {
 
-      const domainExceptions = { '*.headlessui.com': 'yes' };
+      const domainExceptions = { '*.headlessui.com': 'yes', 'skip.com': 'no' };
       const proxyServers = [{ url: 'http://proxy.test.com:8080' }];
       const pacScripts = [];
 
       const pacScript = proxyManager.generateCombinedPacScript(domainExceptions, proxyServers, pacScripts, false);
-      
-      // Domain exceptions should not be included when user proxies disabled
-      expect(pacScript).not.toContain('domainExceptions');
+
+      expect(pacScript).toContain('domainExceptions');
+      expect(pacScript).toContain('skip.com');
+      expect(pacScript).toContain("option === 'yes' && hasUserProxies");
     });
 
     it('should run PAC scripts independently when user proxies disabled', () => {
@@ -381,7 +383,7 @@ describe('Background Script - ProxyManager', () => {
 
       const pacScript = proxyManager.generateCombinedPacScript({}, proxyServers, pacScripts, false);
       
-      expect(pacScript).toContain('function userPacScript0');
+      expect(pacScript).toContain('userPacScript0');
       expect(pacScript).toContain('pac-proxy:8080');
       expect(pacScript).toContain('hasUserProxies = false');
     });
@@ -398,7 +400,7 @@ describe('Background Script - ProxyManager', () => {
 
       const pacScript = proxyManager.generateCombinedPacScript({}, proxyServers, pacScripts, true);
       
-      expect(pacScript).toContain('function userPacScript0');
+      expect(pacScript).toContain('userPacScript0');
       expect(pacScript).toContain('pac-proxy:8080'); // PAC script content
       expect(pacScript).toContain('user-proxy:9090'); // User proxy
       expect(pacScript).toContain('hasUserProxies = true');
